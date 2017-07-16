@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="highfaner.com">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>中国流行舞公开赛</title>
+    <script src="./js/auto.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/signup.css">
+  </head>
+  <body>
+    <div class="container-main">
+      <header class="banner-sign">
+        <div class="wrap">
+          <div class="title">
+            CPDC 中国流行舞公开赛
+          </div>
+          <div id="city" class="title">
+
+          </div>
+          <p id="tinfo" class="self"></p>
+          <div id="price" class="price">
+
+          </div>
+        </div>
+      </header>
+      <div class="form-sign">
+        <h2>报名信息</h2>
+        <div class="input-sign">
+          <div class="input-group">
+            <label for="username">姓名</label>
+            <input type="text" name="username" placeholder="真实姓名" value="">
+          </div>
+          <div class="input-group">
+            <label for="ids">身份证</label>
+            <input type="text" name="ids" placeholder="真实身份证号码" value="">
+          </div>
+          <div class="input-group">
+            <label for="age">年龄</label>
+            <input type="text" name="age" placeholder="真实年龄" value="">
+          </div>
+          <div class="input-group">
+            <label for="sex">性别</label>
+            <div class="radio-group">
+              <label class="sex" data-index="0"><input type="radio" name="sex" data-val="男"> <span>男</span></label>&emsp;
+              <label class="sex" data-index="1"><input type="radio" name="sex" data-val="女"> <span>女</span></label>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="mobile">手机号</label>
+            <input type="text" name="mobile" placeholder="11位手机号码" value="">
+          </div>
+          <div class="input-group">
+            <label for="code">验证码</label>
+            <input id="code" type="text" name="code" placeholder="6位短信验证码" value="">
+            <div class="code-btn">
+              获取短信验证码
+            </div>
+          </div>
+          <!-- <div class="internal hide">
+            <input type="text" name="qqOrWx" value="">
+          </div> -->
+          <!-- <div class="input-group">
+            <label for="comp">公司</label>
+            <input type="text" name="comp" placeholder="公司简称" value="">
+          </div>
+          <div class="input-group">
+            <label for="work">职位</label>
+            <input type="text" name="work" placeholder="工作岗位" value="">
+          </div> -->
+        </div>
+
+      </div>
+
+      <div class="form-sign">
+        <h2>舞蹈类型</h2>
+        <ul>
+
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="float hide">
+      <div class="wraps">
+        <div class="code-group">
+          <div class="code-input">
+            <input id="icode" type="text" name="icode" placeholder="图片验证码" value="">
+          </div>
+          <div class="code-btn">
+            <img id="img_sid" src="" alt="">
+          </div>
+        </div>
+        <div class="btn-link">
+          <div class="canle">
+            取消
+          </div>
+          <div class="ok">
+            确定
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="loading hide">
+      <span>
+        您的信息正在提交...
+      </span>
+    </div>
+    <footer>
+      <div id="total" class="prices">
+
+      </div>
+      <div class="sign">
+        立即付费
+      </div>
+    </footer>
+  </body>
+  <script src="./js/zepto.js" charset="utf-8"></script>
+  <script src="./js/common.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    (function($, w) {
+      var citys = $.utils.queryUrl(location.search, 'ct');
+      var types = $.utils.queryUrl(location.search, 'tp');
+      var arrcity = {
+        tj: '天津'
+      }
+      var dances = [['BREAKING', 'SHUFFLE', 'FREESTYLE'], ['齐舞']];
+      if (!citys || !types) {
+        alert('非法打开页面！');
+        return;
+      }
+      switch (types) {
+        case '1':
+          $('#price').text('¥199.00');
+          $('#total').text('合计：¥199.00');
+          $('#tinfo').text('个人赛报名·1张');
+          render(0);
+          break;
+        case '2':
+          $('#price').text('¥399.00');
+          $('#total').text('合计：¥399.00');
+          $('#tinfo').text('齐舞赛报名·1张');
+          render(1);
+          break;
+      }
+      $('#city').text(arrcity[citys] + '赛区');
+
+      function render(i) {
+        var datas = dances[i];
+        for(var j = 0; j < datas.length; j ++) {
+          var ele = j == 0 ? '<li class="active">'+ datas[j] +'</li>' : '<li>'+ datas[j] +'</li>';
+          $('.form-sign ul').append(ele);
+        }
+      }
+
+      var actI = 0;
+      $('.form-sign li').on('click', function(event) {
+        event.preventDefault();
+        if ($(this).index() == actI) return;
+        $('.form-sign li').eq(actI).removeClass('active');
+        $(this).addClass('active');
+        actI = $(this).index();
+      });
+      var safeLock = false;
+      function openLock() {
+        safeLock = false;
+      }
+      var _mb = '';
+      $('.sign').on('click', function(event) {
+        event.preventDefault();
+        if (safeLock) return;
+        safeLock = true;
+        var _us = $('[name=username]').val(),
+          _age = $('[name=age]').val(),
+          _code = $('#code').val(),
+          _ids = $('[name=ids]').val(),
+          _sex = '',
+          _ct = arrcity[citys],
+          _mn = '',
+          _mt = types;
+        _mb = $('[name=mobile]').val(),
+        _mn = $('.form-sign ul li.active').text();
+        $('[name=sex]').each(function(k, v) {
+          if (v.checked) {
+            _sex =$(v).data('val');
+          }
+        });
+
+        var arrKl = [_us, _ids, _age, _sex, _mb, _code];
+        var arrMsg = ['姓名', '身份证', '年龄', '性别', '手机号码', '短信验证码'];
+        for (var i = 0; i < 6; i ++) {
+          if(!($.utils.validate.required(arrKl[i]))){
+            alert($.utils.message.required(arrMsg[i]));
+            openLock();
+            return;
+          }
+        }
+
+        if (!($.utils.validate.mobile(_mb))) {
+          alert($.utils.message.mobile);
+          openLock();
+          return;
+        }
+
+        $('.loading').show();
+
+        // openLock();
+        $.utils.post({
+          url: '../php1/index.php',
+          data: {url: 'bm', age: _age, city_name: _ct, code: _code, id_no: _ids, metch_name: _mn, metch_type: _mt, phone: _mb, sex: _sex, user_name: _us},
+          success: function(data) {
+            if (data && data.code == "1") {
+              $('.loading').hide();
+              var _dt = data.data;
+              var urls = 'http://pay.highfaner.com/pay/ali/pay_url?order_id=' + _dt.order_id + '&order_no=' + _dt.order_no + '&return_url=http://www.highfaner.com/match/success.html';
+              location.href = urls;
+            } else {
+              openLock();
+              $('.loading').hide();
+              alert(data.msg);
+            }
+          }
+        });
+        // $.utils.validate.required();
+      });
+      $('.canle').on('click', function(event) {
+        event.preventDefault();
+        openCodeLock();
+        $('.float').hide();
+      });
+      function await() {
+        $('.code-btn').text('60s...');
+        var _cnt = 60;
+        var _tmr = setInterval(function() {
+          _cnt --;
+          if (_cnt == 0) {
+            $('.code-btn').text(获取短信验证);
+            openCodeLock();
+            clearInterval(_tmr);
+            return;
+          }
+          $('.code-btn').text(_cnt + 's...');
+        }, 1000);
+      }
+      $('.ok').on('click', function(event) {
+        event.preventDefault();
+        var icode = $('#icode').val();
+        if (!icode) {
+          // openCodeLock();
+          alert('输入图片验证码！');
+          return;
+        }
+        $.utils.post({
+          url: '../php1/index.php',
+          data: {url: 'getcode', img_code: icode, img_sid: __sid, phone: _mb},
+          success: function(data) {
+            if (data && data.code == "1") {
+              // openCodeLock();
+              await();
+              $('.float').hide();
+            } else {
+              // openCodeLock();
+              alert('获取短信验证码错误！原因:'+data.msg + '! 重新输入图片验证码。');
+              $('#icode').val('');
+              $.utils.post({
+                url: '../php1/index.php',
+                data: {url: 'imgCode'},
+                success: function(data) {
+                  if (data && data.code == "1") {
+                    __sid = data.data.img_sid;
+                    $('#img_sid').attr('src', data.data.img_src);
+                  } else {
+                    alert('获取图片失败！');
+                  }
+                }
+              });
+            }
+          }
+        });
+        $('.float').hide();
+      });
+
+      var codeLock = false;
+      function openCodeLock() {
+        codeLock = false;
+      }
+      var __sid = "";
+      $('.code-btn').on('click', function(event) {
+        // event.preventDefault();
+        if (codeLock) return;
+        codeLock = true;
+        _mb = $('[name=mobile]').val();
+        if (!_mb) {
+          alert('请先输入手机号码！');
+          openCodeLock();
+          return;
+        }
+        $.utils.post({
+          url: '../php1/index.php',
+          data: {url: 'imgCode'},
+          success: function(data) {
+            if (data && data.code == "1") {
+              __sid = data.data.img_sid;
+              $('#img_sid').attr('src', data.data.img_src);
+            } else {
+              alert('获取图片失败！');
+            }
+          }
+        });
+        $('.float').show();
+        //TO-DO
+      });
+    })(Zepto, window);
+  </script>
+</html>

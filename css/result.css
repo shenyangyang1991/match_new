@@ -1,0 +1,42 @@
+.container-main {
+  padding-top: .6rem;
+}
+.ret-block {
+  width: 6rem;
+  height: 4.4rem;
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px 0 rgba(161,121,114,.34);
+}
+
+.ret-block h2 {
+  font-size: .4rem;
+  font-weight: 400;
+  padding-left: .4rem;
+  padding-top: .8rem;
+}
+
+.ret-block input {
+  display: block;
+  width: 5rem;
+  height: 1rem;
+  margin-left: .4rem;
+  margin-top: .4rem;
+  border-radius: 5px;
+  line-height: 1rem;
+  background: #eee;
+  border: none;
+}
+
+.ret-block .btn-link {
+  /*padding-top: .4rem;*/
+  width: 5.6rem;
+  height: 1rem;
+  font-size: .38rem;
+  text-align: center;
+  line-height: 1rem;
+  margin: .2rem auto 0;
+  background: #12dbd1;
+  color: #fff;
+  border-radius: 5px;
+}
